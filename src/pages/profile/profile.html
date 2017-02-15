@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Profile
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div *ngIf="staff" class="selection">
+        <ion-card>
+            <ion-card-content>
+                <h2 class="card-title">{{staff.staffname[lang]}}</h2>
+                <p>{{staff.position[lang]}}</p>
+                <p>{{staff.position_other[lang]}}</p>
+            </ion-card-content>
+            <ion-list>
+                <ion-item (click)="callNow(staff.mobileph)" *ngIf="staff.mobileph">
+                    <ion-icon item-left name="call" color="secondary"></ion-icon>
+                    <p>{{_lbl[0][lang]}}</p>
+                    <h3> {{staff.mobileph}} </h3>
+                </ion-item>
+                <ion-item *ngIf="staff.email">
+                    <ion-icon item-left name="mail" color="danger"></ion-icon>
+                    <p>{{_lbl[1][lang]}}</p>
+                    <h3> {{staff.email}} </h3>
+                </ion-item>
+                <ion-item *ngIf="!villager">
+                    <ion-icon item-left name="calendar" color="primary"></ion-icon>
+                    <p>{{_lbl[2][lang]}}</p>
+                    <h3> {{staff.dob}} </h3>
+                </ion-item>
+                <ion-item *ngIf="!villager" text-wrap>
+                    <ion-icon item-left name="home" color="secondary"></ion-icon>
+                    <p>{{_lbl[3][lang]}}</p>
+                    <h3> {{staff.address[lang]}} </h3>
+                </ion-item>
+            </ion-list>
+        </ion-card>
+        <ion-card *ngIf="staff.contactph">
+            <ion-list>
+              <ion-item>
+                  <ion-icon item-left name="medical" color="danger"></ion-icon>
+                  <h2 color="danger" ion-text> {{_lbl[4][lang]}} </h2>
+              </ion-item>
+              <ion-item (click)="callNow(staff.contactph)">
+                  <ion-icon item-left name="call" color="secondary"></ion-icon>
+                  <h3><strong> {{staff.contactperson[lang]}} </strong></h3>
+                  <h3> {{staff.contactph}} </h3>
+              </ion-item>
+            </ion-list>
+        </ion-card>
+    </div>
+</ion-content>

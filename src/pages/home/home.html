@@ -1,0 +1,23 @@
+<ion-header>
+  <!--<ion-navbar style="text-align: center">
+    <ion-title>CDD Assistant</ion-title>
+  </ion-navbar>-->
+</ion-header>
+<ion-content padding>
+  <h4 class="center"><br>Welcome to CDD Assistant APP</h4>
+  <p>
+    <br>
+  </p>
+
+  <div class="home-list">
+
+    <button ion-button block color="{{p.color}}" outline (click)="openPage(p)" class="home-button" *ngFor="let p of pages">
+      <ion-icon name="{{p.name}}" left></ion-icon> 
+      <p> {{p.title}}</p>
+    </button>
+
+  </div>
+  
+
+  
+</ion-content>

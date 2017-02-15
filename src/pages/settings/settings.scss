@@ -1,0 +1,47 @@
+page-settings {
+  .checkFontOuter{
+    display: block;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    opacity:0;
+  }
+
+  .checkFont{
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    height: 0;
+    color: red;
+    border: none;
+  }
+
+  .progress_outer{
+    background: #eee !important;
+    border-radius:0.2em;
+    height: 0.8em;
+    padding: 0;
+    margin: 5px 0;
+  }
+
+  .progress_preloader{
+    background: #f0eaac !important;
+    border-radius:0.2em;
+    height: 100%;
+    margin: 0px;
+    //width: 0;
+  }
+
+  .progress_loader{
+    background: #387ef5 !important;
+    border-radius:0.2em;
+    height: 100%;
+    padding: 0.1em;
+    text-align:center !important;
+    color: white !important;
+    text-shadow: none;
+    font-size: 0.6em;
+    margin: 0px;
+    //width: 0;
+  }
+}

@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-navbar hideBackButton="true">
+    <button ion-button menuToggle *ngIf="_setting.downloaded">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Settings</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <div class="checkFontOuter">  <!-- for Unicode Rendering Ckecking -->
+    <span class="checkFont" id="u">က</span>
+    <span class="checkFont" id="uu">က္က</span>
+  </div>                        <!-- for Unicode Rendering Ckecking -->
+
+  <ion-list>
+    
+    <ion-item>
+      <ion-label>{{_lbl[0][_setting.lang]}}</ion-label>
+      <ion-select [(ngModel)]="_setting.lang" (ionChange)="applySetting(false)">
+        <ion-option value="en">English</ion-option>
+        <ion-option value="my" *ngIf="unicodeRender">မြန်မာ</ion-option>
+        <ion-option value="zg" *ngIf="!unicodeRender">ဗမာ</ion-option>
+      </ion-select>
+    </ion-item>
+    <br>
+
+    <ion-item>
+      <button ion-button block  item-right icon-left (click)="applySetting(true)"> 
+        <ion-icon name="ios-checkmark-circle-outline" ></ion-icon> 
+        Apply
+      </button>
+    </ion-item>
+    <br><br><br>
+
+    <ion-item>
+      <ion-label>Host</ion-label>
+      <ion-input type="text" [(ngModel)]="_setting.host"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Port</ion-label>
+      <ion-input type="number" [(ngModel)]="_setting.port"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <div class="progress_outer" style="width: 100%"> 
+        <div class="progress_preloader" [style.width]="percent_vl + '%'" *ngIf="percent_vl >= 1">
+          <div class="progress_loader" [style.width]="percent + '%'" *ngIf="percent >= 1">
+            <span class="percent">{{percent_vl}}%</span>
+          </div>
+        </div>
+      </div>
+    </ion-item>
+    <ion-item>
+      <button ion-button block  item-right icon-left (click)="download()"> 
+        <ion-icon name="cloud-download" ></ion-icon> 
+        Download Data form Server
+      </button>
+    </ion-item>
+
+  </ion-list>
+</ion-content>

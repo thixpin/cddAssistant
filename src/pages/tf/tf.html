@@ -1,0 +1,41 @@
+<ion-header>
+
+  <ion-navbar hideBackButton="true">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Technical Facilitators</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-item-sliding *ngFor="let s of staffs">
+      <ion-item>
+        <ion-icon name="{{genderIcon[s.gender].name}}" color="{{genderIcon[s.gender].color}}" item-right> </ion-icon>
+        <h2>{{s.staffname[lang]}}</h2>
+        <h3>{{getPost(s.position_id)[lang]}}</h3>
+        <p>
+          <ion-icon name="call" color="secondary" *ngIf="s.mobileph"> </ion-icon>
+          {{s.mobileph}}  &nbsp;
+          <ion-icon name="mail" color="primary" *ngIf="s.email"> </ion-icon>
+          {{s.email}}
+        </p>
+      </ion-item>
+      <ion-item-options side="left">
+        <button ion-button color="secondary" (click)="callNow(s.mobileph)"  *ngIf="s.mobileph">
+          <ion-icon name="call"></ion-icon>
+          &nbsp;Call&nbsp;
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right">
+        <button ion-button  color="primary" (click)="openProfile(s)">
+          <ion-icon name="person"></ion-icon>
+          Profile
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
