@@ -1,6 +1,8 @@
 {
-  "name": "CDD-Assistant",
+  "name": "CDDAssistant",
   "app_id": "com.thixpin.cdd.assistant",
-  "v2": true,
-  "typescript": true
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

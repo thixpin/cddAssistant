@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, App, ViewController, LoadingController } from 'ionic-angular';
-import {Http} from '@angular/http';
+import { Http } from '@angular/http';
+//import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/retry';
 import 'rxjs/add/operator/timeout';
 import 'rxjs/add/operator/delay';
@@ -31,7 +32,7 @@ export class SettingsPage {
   constructor(  public navCtrl: NavController, 
                 public navParams: NavParams,
                 public alertCtrl: AlertController,
-                private http: Http, 
+                public http: Http, 
                 private DataService: DataService,
                 public viewCtrl: ViewController,
                 public appCtrl: App,
@@ -39,11 +40,10 @@ export class SettingsPage {
   ) {}
 
   public get_url(){
-    //var post_data = JSON.stringify({data: null});
-    //var headers = new Headers();
+
     var host = (this._setting.host || "192.168.1.100") ;
     var port = (this._setting.port || 80);
-    var download_url = "http://" + host + ":" + port + "/mis_y4/rest/download_data/";
+    var download_url = "http://" + host + ":" + port + "/mis_y5/rest/download_data/";
     return download_url;
   }
 
@@ -51,20 +51,14 @@ export class SettingsPage {
     this.http.get(this.get_url()+"?tablename="+table.name)
     .timeout(5000).map(res => res.json())
     .subscribe(data => {
-      //this.posts = data[table];
-      //console.log(data[tablename]);
-      var tbl_name= this.DataService.table(table.name); 
-      // var tbl_name = localforage.createInstance({
-      //     name: "CDD-Assistant",
-      //     storeName : table.name
-      // });
 
+      var tbl_name= this.DataService.table(table.name); 
+
+      var _data = data[table.name];
       if(table.tsp){
-        var _data = data[table.name].filter(function(v){
+        _data = data[table.name].filter(function(v){
           return v.township_code == township_code;
         })
-      } else {
-        var _data = data[table.name];
       }
         
       var __data = [];
@@ -165,25 +159,37 @@ export class SettingsPage {
           }
         } 
 
-        for(var k of list){
-          staff[k] = v[k];
+        for(var _k of list){
+          staff[_k] = v[_k];
         } 
 
-        for(var k of nameList){
-          staff[k] = {  en: this.DataService.z2u(v[k]),
-                        my: this.DataService.z2u(v[k]),
-                        zg: v[k]
-                      };
+        for(var __k of nameList){
+          staff[__k] = {  en: this.DataService.z2u(v[__k]),
+                          my: this.DataService.z2u(v[__k]),
+                          zg: v[__k]
+                        };
         }
+
         if(staff['gender'] == 'Male')   staff['gender'] = 1;
         if(staff['gender'] == 'Female') staff['gender'] = 2;
-        if(!staff['subposition_id'] || staff['subposition_id'] > 23) staff['subposition_id'] = 0;
-        if(!staff['position_id'] || staff['position_id'] > 23) staff['subposition_id'] = 0;
+        if(!staff['subposition_id'] || Number(staff['subposition_id']) > 23) staff['subposition_id'] = 0;
+        if(!staff['position_id'] || Number(staff['position_id']) > 23) staff['subposition_id'] = 0;
 
         if(staff['staff_type'] == "v" || staff['staff_type'] == "V"){
+
+          // var p_ids = [];
+          // var p_id = staff['position_id'].split(',');
+          // for(var p of p_id){
+          //   p_ids[p] = p;
+          // }
+          // staff['position_id'] = p_ids;
+          var p_id = staff['position_id'].split(',');
+          staff['position_id'] = p_id[0];
           _staff.cm.push(staff);
+
         } else if((staff['staff_type'] == "S" || staff['staff_type'] == "s") ) {
           //console.log(staff);
+          staff['position_id'] = Number(staff['position_id']);
           if(staff['position_id'] == 6){
               _staff.tf.push(staff);
           } else if(staff['position_id'] == 7){
@@ -201,24 +207,20 @@ export class SettingsPage {
         }
         if(percent >= 100){
           var tbl_staffs = this.DataService.table('staffs');
-          // var tbl_staffs = localforage.createInstance({
-          //     name: "CDD-Assistant",
-          //     storeName : 'staffs'
-          // });
           var stores = ['cf', 'tf', 'cm', 'office'];
-          for(var k of  stores){
-            var value = _staff[k].filter(function(v){
+          for(var k_ of  stores){
+            var value = _staff[k_].filter(function(v){
               return (!v['record_status'] || v['record_status'] != "N");
             });
 
             
-            if(k == 'office'){
+            if(k_ == 'office'){
               value = value.sort((n1,n2) => {
                       if (Number(n1.subposition_id) > Number(n2.subposition_id)) { return 1; }
                       if (Number(n1.subposition_id) < Number(n2.subposition_id)) { return -1; }
                       return 0;
                     });
-            } else if(k == 'cm'){
+            } else if(k_ == 'cm'){
               value = value.sort((n1,n2) => {
                       if (Number(n1.subposition_id) > Number(n2.subposition_id)) { return 1; }
                       if (Number(n1.subposition_id) < Number(n2.subposition_id)) { return -1; }
@@ -227,7 +229,7 @@ export class SettingsPage {
             } 
             
 
-            tbl_staffs.setItem(k, value).then(function(res){
+            tbl_staffs.setItem(k_, value).then(function(res){
               //console.log(res);
             }).catch(function(err){
               console.log(err);
@@ -330,6 +332,7 @@ export class SettingsPage {
       //this.posts = data.data.children;
       if(data == 'ready'){
           this.selectTownship();
+          //console.log(data);
       } else {
           console.log(data);
           this.alertError(data);

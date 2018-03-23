@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
+//import 'rxjs/add/operator/map';
 
-declare var require: any;
-const localforage: LocalForage = require("localforage");
+import localForage from "localforage";
+// declare var require: any;
+// const localforage: LocalForage = require("localforage");
 
 
 @Injectable()
@@ -18,12 +19,14 @@ export class DataService {
   private vl_positions: Array<Object>;
   private current_village: Object;
 
-  tbl_setting = localforage.createInstance({
+  constructor( ) {}
+
+  tbl_setting = localForage.createInstance({
           name: "CDD-Assistant",
           storeName : 'settings'
       });
 
-  constructor() {}
+  
 
   public setVillage(village_code){
     var village = this.villages.filter(function(v){
@@ -72,7 +75,7 @@ export class DataService {
   }
 
   public do_preload(tbl){
-    var tbl_vts = localforage.createInstance({
+    var tbl_vts = localForage.createInstance({
           name: "CDD-Assistant",
           storeName : tbl
       });
@@ -130,7 +133,7 @@ export class DataService {
   }
 
   public table(table_name){
-    var table = localforage.createInstance({
+    var table = localForage.createInstance({
         name: "CDD-Assistant",
         storeName : table_name
     });

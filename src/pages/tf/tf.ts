@@ -52,6 +52,8 @@ export class TfPage {
   }
 
   public callNow(number){
+    number =  number.split(',');
+    number =  number[0];
     number =  number.replace( /\u0020/g, "");
     number =  number.replace( /\u002D/g, "");
     CallNumber.callNumber(number, true)
